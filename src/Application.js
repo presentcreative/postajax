@@ -7,6 +7,7 @@ exports = Class(GC.Application, function () {
 
 	this.initUI = function () {
 		
+		this.view.style.backgroundColor = "#00f";
 		var button = new ButtonView({
 			superview: this.view,
 			width: 154,
@@ -33,15 +34,51 @@ exports = Class(GC.Application, function () {
 	
 	this.getAjax = function() {
 		console.log("getting data from server...");
+		
+		var bigArray = [];
+		
+		for(var i=0; i<100; i++) {
+			bigArray.push("09876"+i);
+		}
+		
+		newObj = {
+			string: "string",
+			int: 19,
+			arr: [1,2,3]
+		}
+
 		ajax.post({
 			url: 'http://beta.presentcreative.com',
-			data: {q: 'closure', type: 'post'}
+			data: {
+				q: 'closure', 
+				type: 'post',
+				bigArray: bigArray,
+				obj: newObj
+			},
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		}, function (err, response) {
 			if (err) {
 				console.error('someting went wrong');
-				console.error(err);
+				var responseText = new TextView({
+					superview: GC.app.view,
+					width: 300,
+					height: 300,
+					x:0,
+					y:104,
+					text:err,
+					color: "#fff"
+				});
 			} else {
 				console.log(response);
+				var responseText = new TextView({
+					superview: GC.app.view,
+					width: 300,
+					height: 300,
+					x:0,
+					y:104,
+					text:response,
+					color: "#fff"
+				});
 			}
 		});	
 	}
